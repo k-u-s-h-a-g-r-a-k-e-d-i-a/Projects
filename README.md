@@ -57,5 +57,5 @@ A structured archive of projects built during my undergraduate studies. Covers c
 </p>
 
 <p align="center">
-  <sub>Kushagra Kedia · CS Undergraduate · Jujutsu University</sub>
+  <sub>Kushagra Kedia · CS Undergraduate ·UPES</sub>
 </p>
