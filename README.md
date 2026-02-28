@@ -5,7 +5,7 @@
 
 <!-- Subtitle -->
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Cinzel&size=16&duration=3000&pause=1000&color=C084FC&center=true&vCenter=true&width=600&lines=Computer+Science+%7C+Jujutsu+University;Building+things+that+(mostly)+work.;C+%7C+Python+%7C+SQL+%7C+HTML" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Cinzel&size=16&duration=3000&pause=1000&color=C084FC&center=true&vCenter=true&width=600&lines=Computer+Science+%7C+University+of+Petroleum+and+Energy+Studies;Building+things+that+(mostly)+work.;C+%7C+Python+%7C+SQL+%7C+HTML" alt="Typing SVG" />
 </p>
 
 ---
@@ -20,21 +20,7 @@ A structured archive of projects built during my undergraduate studies. Covers c
 
 <br/>
 
----
 
-## 〔 Project Index 〕
-
-```
-📂 PROJECTS
-├── [Data Structures & Algorithms]   — Implementations, analysis, and problem sets
-├── [Operating Systems]              — Process scheduling, memory management simulations  
-├── [Computer Networks]              — Socket programming, protocol implementations
-└── [Database Systems]               — Schema design, query optimisation, ER modelling
-```
-
-> Replace the above with your actual project folders/links as the repo grows.
-
-<br/>
 
 ---
 
@@ -64,13 +50,6 @@ A structured archive of projects built during my undergraduate studies. Covers c
 
 ---
 
-## 〔 Contribution Activity 〕
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/k-u-s-h-a-g-r-a-k-e-d-i-a/k-u-s-h-a-g-r-a-k-e-d-i-a/output/github-contribution-grid-snake-invaders.svg" alt="Space invaders contribution graph" />
-</p>
-
----
 
 <!-- Footer -->
 <p align="center">
