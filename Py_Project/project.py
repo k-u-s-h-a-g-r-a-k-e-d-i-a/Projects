@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import os
 
-os.makedirs("figures", exist_ok=True)
+# figures dir is set up after BASE_DIR is defined below
 
 plt.rcParams.update({
     "figure.dpi": 150,
@@ -37,9 +37,13 @@ C = {
 FULL_YEARS = ['2016','2017','2018','2019','2020','2021']
 
 # ── Load Data ──────────────────────────────────────────────────────────────────
-delhi  = pd.read_csv('Py_Project4/Delhi crime records.csv', index_col='CRIME HEAD')
-kerala = pd.read_csv('Py_Project4/kerala criminal cases  - crimes  accidents.csv')
-pocso  = pd.read_csv('Py_Project4/kerala criminal cases  - POSCO ACTS(district wise).csv', index_col='District')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FIGURES_DIR = os.path.join(BASE_DIR, '..', 'figures')
+os.makedirs(FIGURES_DIR, exist_ok=True)
+
+delhi  = pd.read_csv(os.path.join(BASE_DIR, 'Delhi crime records.csv'), index_col='CRIME HEAD')
+kerala = pd.read_csv(os.path.join(BASE_DIR, 'kerala criminal cases  - crimes  accidents.csv'))
+pocso  = pd.read_csv(os.path.join(BASE_DIR, 'kerala criminal cases  - POSCO ACTS(district wise).csv'), index_col='District')
 
 delhi  = delhi.drop(columns=['Aug 2022'], errors='ignore')
 kerala = kerala.drop(columns=['2022 (Up to Aug)'], errors='ignore')
@@ -73,7 +77,7 @@ covid_idx = delhi_years.index('2020')
 ax.axvspan(covid_idx - 0.4, covid_idx + 0.4, alpha=0.12, color='gray')
 ax.text(covid_idx + 0.5, ax.get_ylim()[1] * 0.88, 'COVID-19', fontsize=8, color='gray')
 plt.tight_layout()
-plt.savefig("figures/fig1_delhi_crime_trends.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig1_delhi_crime_trends.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig1 — Delhi major crime trends (line)")
 
@@ -99,7 +103,7 @@ ax.legend(handles=[
     mpatches.Patch(color=C['blue'], label='< 10,000 cases'),
 ], fontsize=9)
 plt.tight_layout()
-plt.savefig("figures/fig2_delhi_2021_snapshot.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig2_delhi_2021_snapshot.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig2 — Delhi 2021 snapshot (horizontal bar)")
 
@@ -130,7 +134,7 @@ for ax, data, label, col in zip(axes,
 
 fig.suptitle("Delhi — Theft Category Distributions Across Years", fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig("figures/fig3_delhi_theft_histograms.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig3_delhi_theft_histograms.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig3 — Delhi theft histograms")
 
@@ -168,7 +172,7 @@ for at in autotexts:
 ax.set_title("Kerala — IPC Crime Composition (2021)\n[Excluding 'Other IPC Crimes']",
              fontsize=14, fontweight='bold', pad=20)
 plt.tight_layout()
-plt.savefig("figures/fig4_kerala_ipc_pie.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig4_kerala_ipc_pie.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig4 — Kerala IPC pie chart")
 
@@ -195,7 +199,7 @@ ax.set_ylabel("Cases Registered", fontsize=11)
 ax.legend(fontsize=9)
 ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f'{int(x):,}'))
 plt.tight_layout()
-plt.savefig("figures/fig5_kerala_caw_trends.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig5_kerala_caw_trends.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig5 — Kerala crimes against women (line)")
 
@@ -223,7 +227,7 @@ ax.set_ylabel("Count", fontsize=11)
 ax.legend(fontsize=10)
 ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f'{int(x):,}'))
 plt.tight_layout()
-plt.savefig("figures/fig6_kerala_accidents_stacked.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig6_kerala_accidents_stacked.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig6 — Kerala accidents (stacked bar)")
 
@@ -252,7 +256,7 @@ ax.set_title("Kerala — POCSO Cases by District (2016–2021)\n[Sorted by 2021 
              fontsize=14, fontweight='bold', pad=15)
 ax.spines[:].set_visible(False)
 plt.tight_layout()
-plt.savefig("figures/fig7_pocso_heatmap.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig7_pocso_heatmap.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig7 — POCSO heatmap")
 
@@ -288,7 +292,7 @@ ax.set_ylabel("Cases Registered", fontsize=11)
 ax.legend(fontsize=10)
 ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f'{int(x):,}'))
 plt.tight_layout()
-plt.savefig("figures/fig8_delhi_vs_kerala.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig8_delhi_vs_kerala.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig8 — Delhi vs Kerala grouped bar")
 
@@ -315,7 +319,7 @@ ax.set_ylabel("Cases", fontsize=11)
 ax.legend(fontsize=10)
 ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f'{int(x):,}'))
 plt.tight_layout()
-plt.savefig("figures/fig9_kerala_cyber_missing.png", bbox_inches='tight')
+plt.savefig(os.path.join(FIGURES_DIR, "fig9_kerala_cyber_missing.png"), bbox_inches='tight')
 plt.close()
 print("✓ fig9 — Kerala cyber & missing (area chart)")
 
