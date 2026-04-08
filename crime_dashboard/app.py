@@ -92,7 +92,7 @@ COLORS = ["#7c5cbf","#e05c8a","#50c8f0","#f4a742","#51cf66","#ff6b6b","#c084fc",
 @st.cache_data
 def load_data():
     # ── Delhi ─────────────────────────────────────────────────────
-    delhi_raw = pd.read_csv(BASE / "Delhi_crime_records.csv")
+    delhi_raw = pd.read_csv(BASE / "../Py_Project/Delhi crime records.csv")
     delhi_raw.columns = [c.strip() for c in delhi_raw.columns]
     delhi_raw = delhi_raw.rename(columns={"CRIME HEAD": "Crime_Head", "Aug 2022": "2022"})
     year_cols_d = [c for c in delhi_raw.columns if c != "Crime_Head"]
@@ -104,7 +104,7 @@ def load_data():
     delhi_long["State"] = "Delhi"
 
     # ── Kerala Crimes ─────────────────────────────────────────────
-    kerala_raw = pd.read_csv(BASE / "kerala_criminal_cases__-_crimes__accidents.csv")
+    kerala_raw = pd.read_csv(BASE / "../Py_Project/kerala criminal cases  - crimes  accidents.csv")
     kerala_raw.columns = [c.strip() for c in kerala_raw.columns]
     if "Sl.No" in kerala_raw.columns:
         kerala_raw = kerala_raw.drop(columns=["Sl.No"])
@@ -118,7 +118,7 @@ def load_data():
     kerala_long["State"] = "Kerala"
 
     # ── Kerala POSCO (District-wise) ──────────────────────────────
-    posco_raw = pd.read_csv(BASE / "kerala_criminal_cases__-_POSCO_ACTS_district_wise_.csv")
+    posco_raw = pd.read_csv(BASE / "../Py_Project/kerala criminal cases  - POSCO ACTS(district wise).csv")
     posco_raw.columns = [c.strip() for c in posco_raw.columns]
     posco_raw = posco_raw.rename(columns={"2022 (Up to Aug)": "2022"})
     year_cols_p = [c for c in posco_raw.columns if c != "District"]

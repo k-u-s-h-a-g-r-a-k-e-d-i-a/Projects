@@ -8,13 +8,10 @@ An interactive Streamlit dashboard analyzing NCRB crime data for **Delhi** (2001
 crime_dashboard/
 ├── app.py
 ├── requirements.txt
-├── README.md
-├── Delhi_crime_records.csv
-├── kerala_criminal_cases__-_crimes__accidents.csv
-└── kerala_criminal_cases__-_POSCO_ACTS_district_wise_.csv
+└── README.md
 ```
 
-> ⚠️ Place all 3 CSV files in the **same folder** as `app.py`.
+> ⚠️ The app uses the CSV files from the `Py_Project/` directory. Make sure you don't move or delete them.
 
 ---
 
