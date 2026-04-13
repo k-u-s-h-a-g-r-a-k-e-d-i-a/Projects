@@ -143,19 +143,35 @@ def load_data():
 delhi_df, kerala_df, posco_df, delhi_raw, kerala_raw, posco_raw = load_data()
 
 # ─────────────────────────────────────────────────────────────────
-# GLOBAL SEARCH LOGIC (Vectorized)
+# SESSION STATE INITIALIZATION
+# ─────────────────────────────────────────────────────────────────
+if "search_q" not in st.session_state:
+    st.session_state.search_q = ""
+if "page" not in st.session_state:
+    st.session_state.page = "📊 Overview"
+
+# ─────────────────────────────────────────────────────────────────
+# GLOBAL SEARCH LOGIC (Vectorized & Session Persistent)
 # ─────────────────────────────────────────────────────────────────
 st.write("") # Spacer
 
-# Using a container for the modern header look
+def clear_search():
+    st.session_state.search_q = ""
+    st.rerun()
+
+# Modern Header Container
 with st.container():
     c1, c2, c3 = st.columns([0.1, 3, 1])
     with c2:
-        search_query = st.text_input("🔍", placeholder="Search categories, crimes, or districts (No for-loops, fast pandas logic)...", label_visibility="collapsed")
+        search_query = st.text_input(
+            "🔍", 
+            placeholder="Search categories, crimes, or districts...", 
+            label_visibility="collapsed",
+            key="search_q"
+        )
     with c3:
         if search_query:
-            if st.button("✖ Clear Search"):
-                st.rerun()
+            st.button("✖ Clear Search", on_click=clear_search)
 
 if search_query:
     # Vectorized filtering for all datasets
@@ -163,9 +179,14 @@ if search_query:
     kerala_query_mask = kerala_df["Crime_Head"].str.contains(search_query, case=False, na=False)
     posco_query_mask = posco_df["District"].str.contains(search_query, case=False, na=False)
 
-    delhi_df = delhi_df[delhi_query_mask]
-    kerala_df = kerala_df[kerala_query_mask]
-    posco_df = posco_df[posco_query_mask]
+    delhi_filt_df = delhi_df[delhi_query_mask]
+    kerala_filt_df = kerala_df[kerala_query_mask]
+    posco_filt_df = posco_df[posco_query_mask]
+    
+    # Update global references
+    delhi_df = delhi_filt_df
+    kerala_df = kerala_filt_df
+    posco_df = posco_filt_df
     
     # Also filter raw data
     delhi_raw = delhi_raw[delhi_raw["Crime_Head"].str.contains(search_query, case=False, na=False)]
@@ -173,9 +194,34 @@ if search_query:
     posco_raw = posco_raw[posco_raw["District"].str.contains(search_query, case=False, na=False)]
 
     # Result count indicator
-    total_matches = len(delhi_df["Crime_Head"].unique()) + len(kerala_df["Crime_Head"].unique())
+    d_matches = list(delhi_df["Crime_Head"].unique())
+    k_matches = list(kerala_df["Crime_Head"].unique())
+    total_matches = len(d_matches) + len(k_matches)
+
     if total_matches > 0:
-        st.info(f"✨ Found **{total_matches}** crime categories matching **'{search_query}'** across datasets.")
+        with st.expander(f"✨ Found **{total_matches}** categories matching **'{search_query}'**. Click to preview details.", expanded=True):
+            st.markdown("### 🗺️ Quick Navigation & Preview")
+            col_d, col_k = st.columns(2)
+            
+            with col_d:
+                if d_matches:
+                    st.success(f"🏙️ Delhi: {len(d_matches)} matches")
+                    if st.button("Jump to Delhi Results", key="goto_delhi"):
+                        st.session_state.page = "🏙️ Delhi"
+                        st.rerun()
+                    st.write(", ".join(d_matches[:5]) + ("..." if len(d_matches) > 5 else ""))
+                else:
+                    st.info("🏙️ Delhi: 0 matches")
+
+            with col_k:
+                if k_matches:
+                    st.success(f"🌴 Kerala: {len(k_matches)} matches")
+                    if st.button("Jump to Kerala Results", key="goto_kerala"):
+                        st.session_state.page = "🌴 Kerala"
+                        st.rerun()
+                    st.write(", ".join(k_matches[:5]) + ("..." if len(k_matches) > 5 else ""))
+                else:
+                    st.info("🌴 Kerala: 0 matches")
     else:
         st.warning(f"🚫 No categories found matching **'{search_query}'**. Try a different keyword.")
         st.stop()
@@ -197,8 +243,21 @@ with st.sidebar:
     st.markdown("## 📊 Navigation")
     st.markdown("---")
 
-    page = st.radio("Navigate to", ["📊 Overview", "🏙️ Delhi", "🌴 Kerala", "⚔️ Comparison"],
-                    label_visibility="collapsed")
+    # Map current session state page to index
+    page_options = ["📊 Overview", "🏙️ Delhi", "🌴 Kerala", "⚔️ Comparison"]
+    try:
+        page_index = page_options.index(st.session_state.page)
+    except ValueError:
+        page_index = 0
+
+    page = st.radio(
+        "Navigate to", 
+        page_options,
+        index=page_index,
+        key="nav_radio"
+    )
+    # Important: Update session state with radio selection
+    st.session_state.page = page
 
     st.markdown("---")
 
