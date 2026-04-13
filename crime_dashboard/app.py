@@ -68,6 +68,16 @@ st.markdown("""
 
     /* Select boxes */
     .stMultiSelect [data-baseweb="tag"] { background: #3a3a6e; }
+
+    /* Search Bar Styling */
+    .search-container {
+        background: rgba(26, 26, 46, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid #2d2d5e;
+        border-radius: 12px;
+        padding: 10px 20px;
+        margin-bottom: 25px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -132,6 +142,44 @@ def load_data():
 
 delhi_df, kerala_df, posco_df, delhi_raw, kerala_raw, posco_raw = load_data()
 
+# ─────────────────────────────────────────────────────────────────
+# GLOBAL SEARCH LOGIC (Vectorized)
+# ─────────────────────────────────────────────────────────────────
+st.write("") # Spacer
+
+# Using a container for the modern header look
+with st.container():
+    c1, c2, c3 = st.columns([0.1, 3, 1])
+    with c2:
+        search_query = st.text_input("🔍", placeholder="Search categories, crimes, or districts (No for-loops, fast pandas logic)...", label_visibility="collapsed")
+    with c3:
+        if search_query:
+            if st.button("✖ Clear Search"):
+                st.rerun()
+
+if search_query:
+    # Vectorized filtering for all datasets
+    delhi_query_mask = delhi_df["Crime_Head"].str.contains(search_query, case=False, na=False)
+    kerala_query_mask = kerala_df["Crime_Head"].str.contains(search_query, case=False, na=False)
+    posco_query_mask = posco_df["District"].str.contains(search_query, case=False, na=False)
+
+    delhi_df = delhi_df[delhi_query_mask]
+    kerala_df = kerala_df[kerala_query_mask]
+    posco_df = posco_df[posco_query_mask]
+    
+    # Also filter raw data
+    delhi_raw = delhi_raw[delhi_raw["Crime_Head"].str.contains(search_query, case=False, na=False)]
+    kerala_raw = kerala_raw[kerala_raw["Crime_Head"].str.contains(search_query, case=False, na=False)]
+    posco_raw = posco_raw[posco_raw["District"].str.contains(search_query, case=False, na=False)]
+
+    # Result count indicator
+    total_matches = len(delhi_df["Crime_Head"].unique()) + len(kerala_df["Crime_Head"].unique())
+    if total_matches > 0:
+        st.info(f"✨ Found **{total_matches}** crime categories matching **'{search_query}'** across datasets.")
+    else:
+        st.warning(f"🚫 No categories found matching **'{search_query}'**. Try a different keyword.")
+        st.stop()
+
 # Helper
 def fmt(n):
     if n >= 1_000_000: return f"{n/1_000_000:.2f}M"
@@ -146,7 +194,7 @@ def apply_template(fig):
 # SIDEBAR
 # ─────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🔍 India Crime Dashboard")
+    st.markdown("## 📊 Navigation")
     st.markdown("---")
 
     page = st.radio("Navigate to", ["📊 Overview", "🏙️ Delhi", "🌴 Kerala", "⚔️ Comparison"],
@@ -155,32 +203,39 @@ with st.sidebar:
     st.markdown("---")
 
     # Year range for Delhi
-    delhi_years = sorted(delhi_df["Year"].unique())
-    kerala_years = sorted(kerala_df["Year"].unique())
+    delhi_years = sorted(delhi_df["Year"].unique()) if not delhi_df.empty else [2001, 2021]
+    kerala_years = sorted(kerala_df["Year"].unique()) if not kerala_df.empty else [2016, 2021]
 
     if page == "🏙️ Delhi":
-        year_range = st.slider("Year Range", min_value=delhi_years[0], max_value=delhi_years[-1],
+        year_range = st.slider("📅 Year Range", min_value=delhi_years[0], max_value=delhi_years[-1],
                                value=(delhi_years[0], delhi_years[-1]))
-        crime_sel = st.multiselect("Crime Categories",
-                                    sorted(delhi_df["Crime_Head"].unique()),
-                                    default=sorted(delhi_df["Crime_Head"].unique()))
+        crime_heads = sorted(delhi_df["Crime_Head"].unique())
+        crime_sel = st.multiselect("📂 Crime Categories",
+                                    crime_heads,
+                                    default=crime_heads[:10]) # Default to first 10 for performance
 
     elif page == "🌴 Kerala":
-        year_range = st.slider("Year Range", min_value=kerala_years[0], max_value=kerala_years[-1],
+        year_range = st.slider("📅 Year Range", min_value=kerala_years[0], max_value=kerala_years[-1],
                                value=(kerala_years[0], kerala_years[-1]))
 
-        # curated list for readability
+        crime_heads = sorted(kerala_df["Crime_Head"].unique())
+        # Filter core crimes to only those that exist in current filtered set
         core_crimes = ["Murder","Rape","Kidnapping & abduction","Dacoity","Robbery",
                        "Burglary","Theft","Riots","Hurt","Cheating","Molestation",
                        "Cyber Cases","Missing Cases","Cruelty by husband or relatives",
                        "NDPS Act","POSCO Acts"]
-        crime_sel = st.multiselect("Crime Categories",
-                                    sorted(kerala_df["Crime_Head"].unique()),
-                                    default=core_crimes)
+        available_core = [c for c in core_crimes if c in crime_heads]
+        
+        crime_sel = st.multiselect("📂 Crime Categories",
+                                    crime_heads,
+                                    default=available_core if available_core else crime_heads[:10])
 
     elif page == "⚔️ Comparison":
         overlap = sorted(set(delhi_years) & set(kerala_years))
-        year_range = st.slider("Year Range", min_value=overlap[0], max_value=overlap[-1],
+        if not overlap:
+            st.error("No overlapping years found for these filters.")
+            st.stop()
+        year_range = st.slider("📅 Year Range", min_value=overlap[0], max_value=overlap[-1],
                                value=(overlap[0], overlap[-1]))
 
     st.markdown("---")
@@ -192,7 +247,10 @@ with st.sidebar:
 # ═══════════════════════════════════════════════════════════════════
 if page == "📊 Overview":
     st.markdown("# 📊 India Crime Analytics Dashboard")
-    st.markdown("Exploring crime trends across **Delhi** and **Kerala** using NCRB data.")
+    if search_query:
+        st.markdown(f"Filtering view by: `{search_query}`")
+    else:
+        st.markdown("Exploring crime trends across **Delhi** and **Kerala** using NCRB data.")
     st.markdown("---")
 
     # ── KPI Row ──────────────────────────────────────────────────
@@ -318,7 +376,10 @@ if page == "📊 Overview":
 # ═══════════════════════════════════════════════════════════════════
 elif page == "🏙️ Delhi":
     st.markdown("# 🏙️ Delhi Crime Analysis")
-    st.markdown(f"Showing data for **{year_range[0]}–{year_range[1]}**")
+    if search_query:
+        st.markdown(f"Filtering view by: `{search_query}`")
+    else:
+        st.markdown(f"Showing data for **{year_range[0]}–{year_range[1]}**")
     st.markdown("---")
 
     # Filter
@@ -402,7 +463,10 @@ elif page == "🏙️ Delhi":
 # ═══════════════════════════════════════════════════════════════════
 elif page == "🌴 Kerala":
     st.markdown("# 🌴 Kerala Crime Analysis")
-    st.markdown(f"Showing data for **{year_range[0]}–{year_range[1]}**")
+    if search_query:
+        st.markdown(f"Filtering view by: `{search_query}`")
+    else:
+        st.markdown(f"Showing data for **{year_range[0]}–{year_range[1]}**")
     st.markdown("---")
 
     df = kerala_df[
@@ -528,8 +592,11 @@ elif page == "🌴 Kerala":
 # PAGE 4 — COMPARISON
 # ═══════════════════════════════════════════════════════════════════
 elif page == "⚔️ Comparison":
-    st.markdown("# ⚔️ Delhi vs Kerala — Side-by-Side Comparison")
-    st.markdown(f"Overlapping years: **{year_range[0]}–{year_range[1]}**")
+    st.markdown("# ⚔️ Delhi vs Kerala — Comparison")
+    if search_query:
+        st.markdown(f"Filtering view by: `{search_query}`")
+    else:
+        st.markdown(f"Overlapping years: **{year_range[0]}–{year_range[1]}**")
     st.markdown("---")
 
     # Mapping Delhi → Kerala crime names
