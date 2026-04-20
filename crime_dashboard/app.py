@@ -24,59 +24,120 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    /* Main background */
-    .stApp { background-color: #0e0e1a; color: #e0e0f0; }
-    section[data-testid="stSidebar"] { background-color: #13131f; border-right: 1px solid #2a2a40; }
-
-    /* KPI Cards */
-    .kpi-card {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        border: 1px solid #2d2d5e;
-        border-radius: 14px;
-        padding: 22px 18px;
-        text-align: center;
-        margin-bottom: 8px;
+    /* ── NCRB NEUTRAL DARK PALETTE ── */
+    :root {
+        --midnight:   #0F1117;
+        --charcoal:   #161B22;
+        --slate:      #1C2333;
+        --graphite:   #242C3A;
+        --storm:      #2D3748;
+        --silver:     #E2E8F0;
+        --ash:        #A0AEC0;
+        --pewter:     #718096;
+        --smoke:      #4A5568;
+        --alert:      #E53E3E;
+        --caution:    #ED8936;
+        --safe:       #48BB78;
+        --intel:      #4299E1;
+        --forensic:   #9F7AEA;
     }
-    .kpi-value  { font-size: 2.1rem; font-weight: 800; margin: 0; }
-    .kpi-label  { font-size: 0.78rem; color: #8888aa; margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; }
-    .kpi-delta  { font-size: 0.85rem; margin-top: 6px; }
-    .kpi-up     { color: #ff6b6b; }
-    .kpi-down   { color: #51cf66; }
+
+    /* Main background */
+    .stApp { 
+        background: radial-gradient(circle at top right, #1C2333 0%, #0F1117 100%);
+        color: #E2E8F0; 
+    }
+    section[data-testid="stSidebar"] { 
+        background-color: #161B22; 
+        border-right: 1px solid rgba(226, 232, 240, 0.05); 
+    }
+
+    /* KPI Cards - Glassmorphism */
+    .kpi-card {
+        background: rgba(22, 27, 34, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(226, 232, 240, 0.1);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        margin-bottom: 16px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        opacity: 0.5;
+    }
+    .kpi-card:hover { 
+        transform: translateY(-8px); 
+        border-color: var(--accent-color);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        background: rgba(28, 35, 51, 0.8);
+    }
+    .kpi-value  { 
+        font-size: 2.5rem; font-weight: 900; margin: 0; 
+        font-family: 'JetBrains Mono', monospace;
+        background: linear-gradient(135deg, #fff 30%, var(--accent-color) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .kpi-label  { 
+        font-size: 0.7rem; color: #A0AEC0; margin-top: 10px; 
+        letter-spacing: 0.15em; text-transform: uppercase; 
+        font-weight: 700; opacity: 0.8;
+    }
+    .kpi-icon {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        opacity: 0.9;
+    }
+    .kpi-delta  { 
+        font-size: 0.8rem; margin-top: 12px; 
+        font-weight: 700; border-radius: 20px;
+        padding: 4px 12px; display: inline-block;
+        background: rgba(0,0,0,0.2);
+    }
+    .kpi-up     { color: #E53E3E; border: 1px solid rgba(229, 62, 62, 0.2); }
+    .kpi-down   { color: #48BB78; border: 1px solid rgba(72, 187, 120, 0.2); }
 
     /* Section headers */
     .section-header {
-        font-size: 1.25rem; font-weight: 700;
-        color: #c0c0ff;
-        border-left: 4px solid #7c5cbf;
-        padding-left: 12px;
-        margin: 24px 0 12px 0;
+        font-size: 0.95rem; font-weight: 800;
+        color: #A0AEC0;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        margin: 40px 0 20px 0;
+        display: flex;
+        align-items: center;
     }
-
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"]  { gap: 6px; background: transparent; }
-    .stTabs [data-baseweb="tab"]       { background: #1a1a2e; border-radius: 8px 8px 0 0; padding: 8px 20px; color: #8888aa; font-weight: 600; }
-    .stTabs [aria-selected="true"]     { background: #2d2d5e !important; color: #c0c0ff !important; }
-
-    /* Plotly chart bg transparency */
-    .js-plotly-plot { border-radius: 12px; }
-
-    /* Divider */
-    hr { border-color: #2a2a40; }
-
-    /* Sidebar labels */
-    .css-16huue1, label { color: #aaaacc !important; font-size: 0.85rem !important; }
-
-    /* Select boxes */
-    .stMultiSelect [data-baseweb="tag"] { background: #3a3a6e; }
+    .section-header::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, #2D3748, transparent);
+        margin-left: 20px;
+    }
 
     /* Search Bar Styling */
     .search-container {
-        background: rgba(26, 26, 46, 0.4);
-        backdrop-filter: blur(10px);
-        border: 1px solid #2d2d5e;
-        border-radius: 12px;
-        padding: 10px 20px;
-        margin-bottom: 25px;
+        background: rgba(22, 27, 34, 0.6);
+        backdrop-filter: blur(8px);
+        border: 1px solid #2D3748;
+        border-radius: 16px;
+        padding: 16px 24px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Prediction Card */
+    .prediction-card {
+        background: linear-gradient(135deg, #1C2333 0%, #161B22 100%);
+        border-radius: 16px;
+        padding: 24px;
+        border-top: 4px solid #9F7AEA;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -84,17 +145,17 @@ st.markdown("""
 PLOTLY_TEMPLATE = dict(
     layout=dict(
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(20,20,40,0.6)",
-        font=dict(color="#c0c0e8", family="Inter, sans-serif"),
-        xaxis=dict(gridcolor="#2a2a40", linecolor="#3a3a50"),
-        yaxis=dict(gridcolor="#2a2a40", linecolor="#3a3a50"),
-        legend=dict(bgcolor="rgba(0,0,0,0)", bordercolor="#3a3a50"),
+        plot_bgcolor="rgba(22,27,34,0.4)",
+        font=dict(color="#E2E8F0", family="'Inter', sans-serif"),
+        xaxis=dict(gridcolor="#2D3748", linecolor="#2D3748", zerolinecolor="#2D3748"),
+        yaxis=dict(gridcolor="#2D3748", linecolor="#2D3748", zerolinecolor="#2D3748"),
+        legend=dict(bgcolor="rgba(0,0,0,0)", bordercolor="#2D3748"),
         margin=dict(l=40, r=20, t=40, b=40),
-        colorway=["#7c5cbf","#e05c8a","#50c8f0","#f4a742","#51cf66","#ff6b6b","#c084fc","#22d3ee"],
+        colorway=["#4299E1","#9F7AEA","#ED8936","#E53E3E","#48BB78","#63B3ED","#F6AD55"],
     )
 )
-COLORS = ["#7c5cbf","#e05c8a","#50c8f0","#f4a742","#51cf66","#ff6b6b","#c084fc","#22d3ee",
-          "#fb7185","#a3e635","#f59e0b","#10b981","#3b82f6","#8b5cf6","#ec4899","#14b8a6"]
+COLORS = ["#4299E1","#9F7AEA","#ED8936","#E53E3E","#48BB78","#63B3ED","#F6AD55","#CBD5E0",
+          "#A0AEC0","#718096","#4A5568","#2D3748","#1C2333","#161B22","#0F1117"]
 
 # ─────────────────────────────────────────────────────────────────
 # DATA LOADING
@@ -244,7 +305,7 @@ with st.sidebar:
     st.markdown("---")
 
     # Map current session state page to index
-    page_options = ["📊 Overview", "🏙️ Delhi", "🌴 Kerala", "⚔️ Comparison"]
+    page_options = ["📊 Overview", "🏙️ Delhi", "🌴 Kerala", "🔬 Detailed Analysis", "⚔️ Comparison"]
     try:
         page_index = page_options.index(st.session_state.page)
     except ValueError:
@@ -256,8 +317,12 @@ with st.sidebar:
         index=page_index,
         key="nav_radio"
     )
-    # Important: Update session state with radio selection
     st.session_state.page = page
+
+    if st.button("🔄 Reset All Filters"):
+        st.session_state.search_q = ""
+        st.session_state.page = "📊 Overview"
+        st.rerun()
 
     st.markdown("---")
 
@@ -289,6 +354,16 @@ with st.sidebar:
                                     crime_heads,
                                     default=available_core if available_core else crime_heads[:10])
 
+    elif page == "🔬 Detailed Analysis":
+        region = st.selectbox("🌎 Select Region", ["Delhi", "Kerala"])
+        if region == "Delhi":
+            cat_options = sorted(delhi_df["Crime_Head"].unique())
+        else:
+            cat_options = sorted(kerala_df["Crime_Head"].unique())
+        
+        target_cat = st.selectbox("🔍 Select Crime Category for Analysis", cat_options)
+        predict_btn = st.checkbox("🔮 Show 3-Year Forecast", value=True)
+
     elif page == "⚔️ Comparison":
         overlap = sorted(set(delhi_years) & set(kerala_years))
         if not overlap:
@@ -296,6 +371,35 @@ with st.sidebar:
             st.stop()
         year_range = st.slider("📅 Year Range", min_value=overlap[0], max_value=overlap[-1],
                                value=(overlap[0], overlap[-1]))
+
+    st.markdown("---")
+    
+    # ── Export System ──────────────────────────────────────────
+    st.markdown("### 📤 Export Data")
+    # Determine export source
+    if page == "🏙️ Delhi":
+        export_df = delhi_df[(delhi_df["Year"].between(*year_range)) & (delhi_df["Crime_Head"].isin(crime_sel))]
+        filename = f"delhi_crime_{year_range[0]}_{year_range[1]}.csv"
+    elif page == "🌴 Kerala":
+        export_df = kerala_df[(kerala_df["Year"].between(*year_range)) & (kerala_df["Crime_Head"].isin(crime_sel))]
+        filename = f"kerala_crime_{year_range[0]}_{year_range[1]}.csv"
+    elif page == "🔬 Detailed Analysis":
+        if region == "Delhi":
+            export_df = delhi_df[delhi_df["Crime_Head"] == target_cat]
+        else:
+            export_df = kerala_df[kerala_df["Crime_Head"] == target_cat]
+        filename = f"{target_cat.lower().replace(' ', '_')}_analysis.csv"
+    else:
+        export_df = None
+
+    if export_df is not None and not export_df.empty:
+        csv = export_df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="💾 Download Filtered CSV",
+            data=csv,
+            file_name=filename,
+            mime='text/csv',
+        )
 
     st.markdown("---")
     st.markdown("<small style='color:#555'>Data: NCRB | Delhi 2001–2022 | Kerala 2016–2022</small>",
@@ -333,30 +437,32 @@ if page == "📊 Overview":
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.markdown(f"""<div class="kpi-card">
-            <p class="kpi-value" style="color:#c084fc">{fmt(delhi_total)}</p>
-            <p class="kpi-label">Delhi Total Crimes (2001–2022)</p>
+        st.markdown(f"""<div class="kpi-card" style="--accent-color: #9F7AEA">
+            <div class="kpi-icon">🏛️</div>
+            <p class="kpi-value">{fmt(delhi_total)}</p>
+            <p class="kpi-label">Delhi Cumulative</p>
         </div>""", unsafe_allow_html=True)
     with c2:
-        arr = "↑" if d_delta > 0 else "↓"
-        cls = "kpi-up" if d_delta > 0 else "kpi-down"
-        st.markdown(f"""<div class="kpi-card">
-            <p class="kpi-value" style="color:#e05c8a">{fmt(delhi_latest)}</p>
-            <p class="kpi-label">Delhi Crimes in 2021</p>
-            <p class="kpi-delta {cls}">{arr} {abs(d_delta):.1f}% vs 2020</p>
+        arr, cls = ("↑", "kpi-up") if d_delta > 0 else ("↓", "kpi-down")
+        st.markdown(f"""<div class="kpi-card" style="--accent-color: #E53E3E">
+            <div class="kpi-icon">🏙️</div>
+            <p class="kpi-value">{fmt(delhi_latest)}</p>
+            <p class="kpi-label">Delhi (2021)</p>
+            <p class="kpi-delta {cls}">{arr} {abs(d_delta):.1f}% YoY</p>
         </div>""", unsafe_allow_html=True)
     with c3:
-        st.markdown(f"""<div class="kpi-card">
-            <p class="kpi-value" style="color:#50c8f0">{fmt(kerala_total)}</p>
-            <p class="kpi-label">Kerala Total Crimes (2016–2022)</p>
+        st.markdown(f"""<div class="kpi-card" style="--accent-color: #4299E1">
+            <div class="kpi-icon">🌴</div>
+            <p class="kpi-value">{fmt(kerala_total)}</p>
+            <p class="kpi-label">Kerala Cumulative</p>
         </div>""", unsafe_allow_html=True)
     with c4:
-        arr = "↑" if k_delta > 0 else "↓"
-        cls = "kpi-up" if k_delta > 0 else "kpi-down"
-        st.markdown(f"""<div class="kpi-card">
-            <p class="kpi-value" style="color:#f4a742">{fmt(kerala_latest)}</p>
-            <p class="kpi-label">Kerala Crimes in 2021</p>
-            <p class="kpi-delta {cls}">{arr} {abs(k_delta):.1f}% vs 2020</p>
+        arr, cls = ("↑", "kpi-up") if k_delta > 0 else ("↓", "kpi-down")
+        st.markdown(f"""<div class="kpi-card" style="--accent-color: #48BB78">
+            <div class="kpi-icon">🌊</div>
+            <p class="kpi-value">{fmt(kerala_latest)}</p>
+            <p class="kpi-label">Kerala (2021)</p>
+            <p class="kpi-delta {cls}">{arr} {abs(k_delta):.1f}% YoY</p>
         </div>""", unsafe_allow_html=True)
 
     st.markdown("---")
@@ -648,7 +754,165 @@ elif page == "🌴 Kerala":
     st.plotly_chart(fig7, use_container_width=True)
 
 # ═══════════════════════════════════════════════════════════════════
-# PAGE 4 — COMPARISON
+# PAGE 4 — DETAILED ANALYSIS & PREDICTION
+# ═══════════════════════════════════════════════════════════════════
+elif page == "🔬 Detailed Analysis":
+    st.markdown(f"# 🔬 Analysis: {target_cat}")
+    st.markdown(f"In-depth statistical profile and forecasting for **{region}**.")
+    st.markdown("---")
+
+    # Filter data for specific category
+    if region == "Delhi":
+        data = delhi_df[delhi_df["Crime_Head"] == target_cat].sort_values("Year")
+    else:
+        data = kerala_df[kerala_df["Crime_Head"] == target_cat].sort_values("Year")
+
+    if data.empty:
+        st.warning("No data found for this category.")
+        st.stop()
+
+    # ── Statistical Calculations ─────────────────────────────────
+    counts = data["Count"].values
+    years = data["Year"].values
+    
+    total = np.sum(counts)
+    mean = np.mean(counts)
+    median = np.median(counts)
+    std_dev = np.std(counts)
+    mx_val = np.max(counts)
+    mx_yr = years[np.argmax(counts)]
+    
+    # CAGR calculation
+    first, last = counts[0], counts[-1]
+    n_years = len(years) - 1
+    cagr = ((last / first)**(1/n_years) - 1) * 100 if first > 0 and n_years > 0 else 0
+
+    # Anomaly Detection (1.5 Sigma)
+    anomalies = data[np.abs(data["Count"] - mean) > 1.5 * std_dev]
+
+    # ── KPI Row ──────────────────────────────────────────────────
+    c1,c2,c3,c4 = st.columns(4)
+    with c1:
+        st.markdown(f"""<div class="kpi-card">
+            <p class="kpi-value" style="color:#4299E1">{fmt(total)}</p>
+            <p class="kpi-label">Cumulative Total</p>
+        </div>""", unsafe_allow_html=True)
+    with c2:
+        st.markdown(f"""<div class="kpi-card">
+            <p class="kpi-value" style="color:#48BB78">{fmt(mean)}</p>
+            <p class="kpi-label">Average / Year</p>
+        </div>""", unsafe_allow_html=True)
+    with c3:
+        color = "#E53E3E" if cagr > 0 else "#48BB78"
+        arr = "↑" if cagr > 0 else "↓"
+        st.markdown(f"""<div class="kpi-card">
+            <p class="kpi-value" style="color:{color}">{arr}{abs(cagr):.1f}%</p>
+            <p class="kpi-label">CAGR (Growth Rate)</p>
+        </div>""", unsafe_allow_html=True)
+    with c4:
+        st.markdown(f"""<div class="kpi-card">
+            <p class="kpi-value" style="color:#ED8936">{fmt(std_dev)}</p>
+            <p class="kpi-label">Volatility (Std Dev)</p>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ── Linear Regression Forecasting ────────────────────────────
+    fig = go.Figure()
+
+    # Actual Data
+    fig.add_trace(go.Scatter(
+        x=years, y=counts,
+        mode="lines+markers",
+        name="Historical Records",
+        line=dict(color="#4299E1", width=3),
+        marker=dict(size=8)
+    ))
+
+    # Anomaly Markers
+    if not anomalies.empty:
+        fig.add_trace(go.Scatter(
+            x=anomalies["Year"], y=anomalies["Count"],
+            mode="markers",
+            name="Statistical Anomaly",
+            marker=dict(color="#E53E3E", size=12, symbol="circle-open", line=dict(width=2)),
+            hovertemplate="Anomaly Detected<br>Year: %{x}<br>Value: %{y:,}<extra></extra>"
+        ))
+
+    # Forecast
+    if predict_btn and len(years) > 2:
+        z = np.polyfit(years, counts, 1)
+        p = np.poly1d(z)
+        
+        last_yr = years[-1]
+        future_yrs = np.array([last_yr + 1, last_yr + 2, last_yr + 3])
+        future_preds = p(future_yrs)
+        
+        # Connect last actual point to first prediction
+        x_pred = np.concatenate([[years[-1]], future_yrs])
+        y_pred = np.concatenate([[counts[-1]], future_preds])
+        
+        # Confidence Band (±1 Std Dev)
+        fig.add_trace(go.Scatter(
+            x=np.concatenate([x_pred, x_pred[::-1]]),
+            y=np.concatenate([y_pred + std_dev, (y_pred - std_dev)[::-1]]),
+            fill='toself',
+            fillcolor='rgba(159, 122, 234, 0.1)',
+            line=dict(color='rgba(255,255,255,0)'),
+            hoverinfo="skip",
+            showlegend=True,
+            name="Confidence Zone (±1σ)"
+        ))
+
+        fig.add_trace(go.Scatter(
+            x=x_pred, y=y_pred,
+            mode="lines",
+            name="Linear Forecast",
+            line=dict(color="#9F7AEA", width=3, dash="dash"),
+        ))
+
+    fig.update_layout(
+        PLOTLY_TEMPLATE["layout"],
+        height=500,
+        xaxis_title="Year",
+        yaxis_title="Case Count",
+        hovermode="x unified",
+        legend=dict(orientation="h", y=1.1)
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ── Details Table ────────────────────────────────────────────
+    col_x, col_y = st.columns([2, 1])
+    
+    with col_x:
+        st.markdown('<p class="section-header">Yearly Breakdown & Anomaly Flags</p>', unsafe_allow_html=True)
+        display_df = data[["Year", "Count"]].copy()
+        display_df["Status"] = "Normal"
+        display_df.loc[display_df["Year"].isin(anomalies["Year"]), "Status"] = "⚠️ Anomaly"
+        
+        st.dataframe(display_df.set_index("Year").style.applymap(
+            lambda x: "color: #E53E3E; font-weight: bold" if x == "⚠️ Anomaly" else "",
+            subset=["Status"]
+        ), use_container_width=True)
+
+    with col_y:
+        st.markdown('<p class="section-header">Forecast Insights</p>', unsafe_allow_html=True)
+        if predict_btn:
+            for y, v in zip(future_yrs, future_preds):
+                v_clamped = max(0, int(v))
+                st.markdown(f"""
+                <div style="background:#1C2333; padding:15px; border-radius:10px; border:1px solid #2D3748; margin-bottom:10px">
+                    <span class="prediction-badge">ESTIMATE</span>
+                    <h3 style="margin:5px 0; color:#9F7AEA">{y}</h3>
+                    <p style="margin:0; font-size:1.4rem; font-weight:700">{fmt(v_clamped)} Cases</p>
+                </div>
+                """, unsafe_allow_html=True)
+            st.info("ℹ️ Predictions based on linear regression of historical records.")
+        else:
+            st.info("Enable 'Show 3-Year Forecast' in the sidebar to see predictions.")
+
+# ═══════════════════════════════════════════════════════════════════
+# PAGE 5 — COMPARISON
 # ═══════════════════════════════════════════════════════════════════
 elif page == "⚔️ Comparison":
     st.markdown("# ⚔️ Delhi vs Kerala — Comparison")
@@ -698,7 +962,7 @@ elif page == "⚔️ Comparison":
     st.markdown('<p class="section-header">Total Crimes (Selected Period) — Grouped by Category</p>', unsafe_allow_html=True)
     agg = combined.groupby(["Mapped","State"])["Count"].sum().reset_index()
     fig = px.bar(agg, x="Mapped", y="Count", color="State", barmode="group",
-                 color_discrete_map={"Delhi":"#c084fc","Kerala":"#50c8f0"})
+                 color_discrete_map={"Delhi":"#9F7AEA","Kerala":"#4299E1"})
     fig.update_layout(PLOTLY_TEMPLATE["layout"], height=420,
                       xaxis_title="Crime Category", yaxis_title="Total Cases",
                       legend_title="State")
@@ -717,7 +981,7 @@ elif page == "⚔️ Comparison":
             with cols[j]:
                 sub = combined[combined["Mapped"] == crime]
                 fig2 = px.line(sub, x="Year", y="Count", color="State", markers=True,
-                               color_discrete_map={"Delhi":"#c084fc","Kerala":"#50c8f0"},
+                               color_discrete_map={"Delhi":"#9F7AEA","Kerala":"#4299E1"},
                                title=crime)
                 fig2.update_layout(PLOTLY_TEMPLATE["layout"], height=280,
                                    showlegend=True, margin=dict(l=30,r=10,t=40,b=30),
