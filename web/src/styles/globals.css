@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Base ── */
+  --bg-primary:       #0F1117;
+  --bg-card:          #161B22;
+  --bg-elevated:      #1C2333;
+  --bg-hover:         #242C3A;
+  --border:           #2D3748;
+
+  /* ── Text ── */
+  --text-primary:     #E2E8F0;
+  --text-secondary:   #A0AEC0;
+  --text-muted:       #718096;
+  --text-placeholder:  #4A5568;
+
+  /* ── Semantic ── */
+  --accent-danger:    #E53E3E;
+  --accent-warning:   #ED8936;
+  --accent-success:   #48BB78;
+  --accent-info:      #4299E1;
+  --accent-forecast:  #9F7AEA;
+
+  /* ── Charts ── */
+  --chart-1: #63B3ED;
+  --chart-2: #4299E1;
+  --chart-3: #9F7AEA;
+  --chart-4: #ED8936;
+  --chart-5: #E53E3E;
+  --chart-6: #48BB78;
+
+  /* ── Typography ── */
+  --font-primary:   'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:      'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Spacing ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* ── Shadows ── */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: var(--font-mono);
+}

@@ -1,62 +1,122 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0a0f,50:1a0533,100:4b0082&height=200&section=header&text=NCRB%20Crime%20Analysis&fontSize=42&fontColor=c084fc&fontAlignY=38&desc=Delhi%20%26%20Kerala%20Crime%20Data%20%7C%20Charts%20%2B%20Predictor%20Dashboard&descSize=16&descAlignY=58&descColor=a78bfa&animation=fadeIn" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F1117,50:1C2333,100:2D3748&height=200&section=header&text=NCRB%20Crime%20Analysis&fontSize=42&fontColor=E2E8F0&fontAlignY=38&desc=Delhi%20%26%20Kerala%20Crime%20Records%20%7C%20Visual%20Analytics%20%2B%20Forecasting&descSize=16&descAlignY=58&descColor=A0AEC0&animation=fadeIn" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0a0a0f" />
-  <img src="https://img.shields.io/badge/Tkinter-GUI-7c3aed?style=for-the-badge&logo=python&logoColor=white&labelColor=0a0a0f" />
-  <img src="https://img.shields.io/badge/Matplotlib-Charts-E34F26?style=for-the-badge&logo=plotly&logoColor=white&labelColor=0a0a0f" />
-  <img src="https://img.shields.io/badge/Pandas-Data-150458?style=for-the-badge&logo=pandas&logoColor=white&labelColor=0a0a0f" />
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=E2E8F0&labelColor=0F1117" />
+  <img src="https://img.shields.io/badge/Next.js-Frontend-E2E8F0?style=for-the-badge&logo=nextdotjs&logoColor=E2E8F0&labelColor=0F1117" />
+  <img src="https://img.shields.io/badge/Recharts-Visualizations-4299E1?style=for-the-badge&logo=d3dotjs&logoColor=E2E8F0&labelColor=0F1117" />
+  <img src="https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?style=for-the-badge&logo=pandas&logoColor=E2E8F0&labelColor=0F1117" />
+  <img src="https://img.shields.io/badge/NCRB-Crime%20Data-E53E3E?style=for-the-badge&logoColor=E2E8F0&labelColor=0F1117" />
+</p>
+
+<p align="center">
+  <em>Analytical dashboard for visualizing, exploring, and forecasting crime trends from India's National Crime Records Bureau.</em>
 </p>
 
 ---
 
-## 〔 About 〕
+## 〔 Overview 〕
 
-A Python project analyzing **NCRB (National Crime Records Bureau)** crime data for **Delhi** (2001–2021) and **Kerala** (2016–2021). Includes:
+A full-stack analytics platform for **NCRB crime data** covering **Delhi** (2001–2021) and **Kerala** (2016–2021). What started as a university Python project has grown into a comprehensive crime data observatory with three interfaces:
 
-1. **Static Chart Generator** — 9 publication-ready matplotlib charts (line, bar, pie, histogram, heatmap, area)
-2. **Interactive Predictor Dashboard** — Tkinter GUI with live search, statistical analysis, anomaly detection, and crime forecasting
+| Interface | Tech | Purpose |
+|-----------|------|---------|
+| 📊 **Chart Generator** | Python + Matplotlib | 9 publication-ready static charts |
+| 🔬 **Desktop Predictor** | Python + Tkinter | GUI with search, stats, anomaly detection |
+| 🌐 **Web Dashboard** | Next.js + Recharts | Interactive frontend with filtering & forecasting |
 
-> *Built as a university project at UPES — Computer Science*
+> ⚠️ **Disclaimer**: This tool visualizes historical crime records for educational and research purposes. Predictions are statistical estimates based on linear regression and should not be treated as definitive forecasts.
+
+---
+
+## 〔 What the Data Tells 〕
+
+```
+┌─────────────────────────────────────────────────┐
+│  DELHI (2001–2021)           KERALA (2016–2021)  │
+│                                                   │
+│  17 crime categories         69 crime categories  │
+│  21 years of records         6 years of records   │
+│  Theft, assault, burglary    IPC crimes, POCSO    │
+│  fraud, kidnapping...        cyber, accidents...  │
+│                                                   │
+│  Peak year: varies by type   20 districts mapped  │
+│  Anomalies: 2020 lockdown    POCSO district-wise  │
+└─────────────────────────────────────────────────┘
+```
 
 ---
 
 ## 〔 Features 〕
 
-### 📊 Chart Generator (`project.py`)
-Generates 9 PNG charts comparing Delhi & Kerala crime trends:
+### 📊 Static Charts (`project.py`)
 
-| # | Chart Type | What It Shows |
-|---|-----------|--------------|
-| 1 | Line | Delhi major crime trends (2001–2021) |
-| 2 | Horizontal Bar | Delhi crime snapshot — 2021 |
-| 3 | Histogram | Delhi theft category distributions |
-| 4 | Pie | Kerala IPC crime composition — 2021 |
-| 5 | Line | Kerala crimes against women |
-| 6 | Stacked Bar | Kerala road accident deaths & injuries |
-| 7 | Heatmap | POCSO cases by Kerala district |
-| 8 | Grouped Bar | Delhi vs Kerala crime comparison |
-| 9 | Area | Kerala cyber crime & missing cases |
+Nine visualization types covering different analytical angles:
 
-### 🔬 Crime Predictor GUI (`gui.py`)
-A Tkinter desktop app that turns raw data into actionable insights:
+| # | Chart | Description |
+|---|-------|-------------|
+| 1 | 📈 Line | Delhi major crime trends across two decades |
+| 2 | 📊 Horizontal Bar | Crime type snapshot for Delhi — 2021 |
+| 3 | 📉 Histogram | Distribution of Delhi theft sub-categories |
+| 4 | 🥧 Pie | Kerala IPC crime composition — 2021 |
+| 5 | 📈 Line | Kerala crimes against women over time |
+| 6 | 📊 Stacked Bar | Kerala road accident fatalities vs injuries |
+| 7 | 🗺️ Heatmap | POCSO cases across Kerala's 20 districts |
+| 8 | 📊 Grouped Bar | Delhi vs Kerala head-to-head comparison |
+| 9 | 📈 Area | Kerala cyber crime & missing persons trends |
 
-- **🔍 Live Search** — Filter crimes/districts as you type
-- **📊 Dashboard Cards** — At-a-glance stats: prediction, latest value, average, peak year
-- **⚠️ Anomaly Detection** — Auto-flags years with unusual spikes/drops (>1.5σ from mean)
-- **🔮 3-Year Forecast** — Linear regression predicts future crime numbers
-- **📋 Full Statistics** — Total, mean, median, std dev, CAGR, year-over-year change
-- **📤 Export** — Save filtered data as CSV
+### 🔬 Desktop Predictor (`gui.py`)
+
+| Feature | Description |
+|---------|------------|
+| 🔍 Live Search | Filter crime categories as you type |
+| 📋 Dashboard Cards | Prediction, latest value, average, peak year at a glance |
+| ⚠️ Anomaly Detection | Flags years with values > 1.5σ from the mean |
+| 🔮 3-Year Forecast | Linear regression predicting next 3 years |
+| 📊 Full Stats | Total, mean, median, std dev, CAGR, year-over-year change |
+| 📤 CSV Export | Save any filtered dataset to file |
+
+### 🌐 Web Dashboard (Frontend)
+
+| Feature | Description |
+|---------|------------|
+| 🗂️ Region Switching | Toggle between Delhi and Kerala datasets |
+| 🔍 Multi-Filter System | Search, category multi-select, year range slider, district picker |
+| 📊 Interactive Charts | Hover tooltips, click-to-detail, animated transitions |
+| 🔴 Anomaly Markers | Visual indicators on charts for statistical outliers |
+| 📈 Forecast Overlay | Dashed prediction line with confidence interval band |
+| ⚖️ Comparison View | Side-by-side Delhi vs Kerala with synced interactions |
+| 📤 Export | Download filtered data as CSV or charts as PNG |
+
+---
+
+## 〔 Color System 〕
+
+The interface uses a neutral, dark analytical palette designed for prolonged data analysis:
+
+| Role | Color | Hex |
+|------|-------|-----|
+| Background | ██ Midnight | `#0F1117` |
+| Cards | ██ Charcoal | `#161B22` |
+| Elevated | ██ Slate | `#1C2333` |
+| Borders | ██ Storm | `#2D3748` |
+| Primary Text | ██ Silver | `#E2E8F0` |
+| Secondary Text | ██ Ash | `#A0AEC0` |
+| Danger/Spike | ██ Alert Red | `#E53E3E` |
+| Warning | ██ Caution Amber | `#ED8936` |
+| Positive/Decline | ██ Safe Green | `#48BB78` |
+| Neutral Data | ██ Intel Blue | `#4299E1` |
+| Predictions | ██ Forensic Violet | `#9F7AEA` |
 
 ---
 
 ## 〔 Datasets 〕
 
-| Dataset | Region | Years | Rows | Source |
-|---------|--------|-------|------|--------|
+| File | Region | Years | Scope | Source |
+|------|--------|-------|-------|--------|
 | `Delhi crime records.csv` | Delhi | 2001–2021 | 17 crime categories | NCRB |
-| `kerala criminal cases - crimes accidents.csv` | Kerala | 2016–2021 | 69 crime categories | NCRB |
+| `kerala criminal cases - crimes accidents.csv` | Kerala | 2016–2021 | 69 categories | NCRB |
 | `kerala criminal cases - POSCO ACTS(district wise).csv` | Kerala | 2016–2021 | 20 districts | NCRB |
 
 ---
@@ -65,17 +125,31 @@ A Tkinter desktop app that turns raw data into actionable insights:
 
 ```
 Projects/
-├── Py_Project/                    # Core project
-│   ├── project.py                 # Chart generator (matplotlib)
-│   ├── gui.py                     # Predictor dashboard (tkinter)
+├── Py_Project/                         # Python core
+│   ├── project.py                      # Chart generator (matplotlib)
+│   ├── gui.py                          # Desktop predictor (tkinter)
 │   ├── Delhi crime records.csv
-│   ├── kerala criminal cases  - crimes  accidents.csv
-│   └── kerala criminal cases  - POSCO ACTS(district wise).csv
-├── crime_dashboard/               # Streamlit web dashboard (optional)
+│   ├── kerala criminal cases - crimes accidents.csv
+│   └── kerala criminal cases - POSCO ACTS(district wise).csv
+│
+├── web/                                # Next.js frontend
+│   ├── src/
+│   │   ├── app/                        # Pages (dashboard, charts, analysis, compare)
+│   │   ├── components/                 # UI components (charts, filters, cards)
+│   │   ├── data/                       # Pre-processed JSON datasets
+│   │   ├── lib/                        # Statistics, forecast, anomaly utilities
+│   │   ├── hooks/                      # Custom React hooks
+│   │   └── styles/                     # Global CSS with palette variables
+│   ├── tailwind.config.js
+│   └── package.json
+│
+├── crime_dashboard/                    # Streamlit prototype (legacy)
 │   ├── app.py
-│   ├── requirements.txt
-│   └── *.csv
-├── figures/                       # Generated charts (from project.py)
+│   └── requirements.txt
+│
+├── figures/                            # Generated PNG charts
+├── docs/
+│   └── SRS.md                          # Software Requirements Specification
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -83,78 +157,123 @@ Projects/
 
 ---
 
-## 〔 Setup & Run 〕
+## 〔 Getting Started 〕
 
 ### Prerequisites
-- Python 3.10 or higher
-- pip (Python package manager)
+- **Python 3.10+** — for chart generator and desktop GUI
+- **Node.js 18+** — for web frontend
+- **npm** or **pnpm** — package manager
 
-### Installation
+### Python Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/k-u-s-h-a-g-r-a-k-e-d-i-a/Projects.git
 cd Projects
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
-```
 
-### Run the Chart Generator
-
-```bash
+# Generate all 9 charts → saved to figures/
 cd Py_Project
 python project.py
-```
-→ Saves 9 PNG charts to the `figures/` folder
 
-### Run the Predictor Dashboard
-
-```bash
-cd Py_Project
+# Launch desktop predictor GUI
 python gui.py
 ```
-→ Opens a desktop GUI — pick a crime, see instant predictions & stats
 
-### Run the Streamlit Dashboard (optional)
+### Web Frontend Setup
 
 ```bash
-cd crime_dashboard
-pip install -r requirements.txt
-streamlit run app.py
+cd web
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
-→ Opens at `http://localhost:8501`
+
+→ Opens at `http://localhost:3000`
+
+### Build for Production
+
+```bash
+cd web
+npm run build
+npm start
+```
 
 ---
 
-## 〔 Libraries Used 〕
+## 〔 Libraries 〕
 
+### Python
 | Library | Purpose |
 |---------|---------|
-| `matplotlib` | Static chart generation (9 chart types) |
-| `pandas` | Data loading, filtering, and manipulation |
-| `numpy` | Statistical calculations, linear regression |
-| `tkinter` | Desktop GUI framework (built-in with Python) |
-| `streamlit` | Web dashboard (optional, for `crime_dashboard/`) |
-| `plotly` | Interactive web charts (optional) |
+| `matplotlib` | Static chart generation |
+| `pandas` | Data loading and manipulation |
+| `numpy` | Statistics and linear regression |
+| `tkinter` | Desktop GUI (built-in) |
+
+### JavaScript / Web
+| Library | Purpose |
+|---------|---------|
+| `next` | React framework with SSR |
+| `react` | UI component model |
+| `recharts` | Interactive chart components |
+| `tailwindcss` | Utility-first styling |
+| `zustand` | Lightweight state management |
+| `html2canvas` | Chart-to-PNG export |
+| `file-saver` | Client-side file downloads |
 
 ---
 
 ## 〔 Screenshots 〕
 
 ### Chart Generator Output
+
 | | |
 |---|---|
-| ![Delhi Trends](figures/fig1_delhi_crime_trends.png) | ![Delhi Snapshot](figures/fig2_delhi_2021_snapshot.png) |
-| ![Theft Histograms](figures/fig3_delhi_theft_histograms.png) | ![Kerala Pie](figures/fig4_kerala_ipc_pie.png) |
+| ![Delhi Trends](figures/fig1_delhi_crime_trends.png) | ![Delhi 2021](figures/fig2_delhi_2021_snapshot.png) |
+| ![Theft Distribution](figures/fig3_delhi_theft_histograms.png) | ![Kerala IPC](figures/fig4_kerala_ipc_pie.png) |
+
+### Web Dashboard
+
+> *Screenshots will be added after frontend implementation*
+
+---
+
+## 〔 Roadmap 〕
+
+- [x] Static chart generation (9 types)
+- [x] Desktop predictor GUI with anomaly detection
+- [x] Streamlit prototype
+- [ ] Next.js web dashboard
+- [ ] Interactive chart gallery
+- [ ] Delhi vs Kerala comparison view
+- [ ] Forecast with confidence intervals
+- [ ] CSV/PNG export from web UI
+- [ ] Mobile-responsive layout
+
+---
+
+## 〔 License 〕
+
+This project is built for academic purposes at UPES. Crime data sourced from [NCRB](https://ncrb.gov.in/) (public domain).
 
 ---
 
 ## 〔 Author 〕
 
 **Kushagra Kedia**
-CS Undergraduate · University of Petroleum and Energy Studies (UPES)
+Computer Science · University of Petroleum and Energy Studies (UPES)
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4b0082,50:1a0533,100:0a0a0f&height=100&section=footer&text=Keep%20Building.&fontSize=18&fontColor=c084fc&fontAlignY=55&animation=fadeIn" />
+  <a href="https://github.com/k-u-s-h-a-g-r-a-k-e-d-i-a">
+    <img src="https://img.shields.io/badge/GitHub-Profile-E2E8F0?style=for-the-badge&logo=github&logoColor=E2E8F0&labelColor=0F1117" />
+  </a>
+</p>
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2D3748,50:1C2333,100:0F1117&height=100&section=footer&text=Data%20Reveals%20the%20Pattern.&fontSize=16&fontColor=A0AEC0&fontAlignY=55&animation=fadeIn" />
 </p>
